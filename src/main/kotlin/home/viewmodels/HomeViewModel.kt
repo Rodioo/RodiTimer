@@ -1,10 +1,10 @@
-package timer.viewmodels
+package home.viewmodels
 
 import androidx.compose.runtime.*
 import kotlinx.coroutines.*
 
 //Clean this
-class TimerViewModel {
+class HomeViewModel {
     var isTimerRunning by mutableStateOf(false)
     var startTime by mutableStateOf(10L)
 

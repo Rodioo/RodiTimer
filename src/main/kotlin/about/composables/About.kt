@@ -1,8 +1,8 @@
-package timer.composables
+package about.composables
 
 import androidx.compose.runtime.Composable
 
 @Composable
-fun Timer() {
+fun About() {
 
 }

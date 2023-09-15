@@ -1,4 +1,4 @@
-package timer.composables.utils
+package home.composables.utils
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon

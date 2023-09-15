@@ -1,17 +1,23 @@
+import about.composables.About
+import alarm.composables.Alarm
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.*
 import menu.composables.AnimatedMenu
-import timer.composables.Timer
+import home.composables.Home
 import common.resources.TOP_BAR_HEIGHT
 import common.resources.WINDOW_SIZE
 import navigation.Screen
 import settings.composables.Settings
 import common.composables.TopBar
+import tags.composables.Tags
+import timer.composables.Timer
 
 @Composable
 @Preview
@@ -20,7 +26,7 @@ fun FrameWindowScope.App(
     onMinimize: () -> Unit,
     onClose: () -> Unit,
 ) {
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Timer) }
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
     var isVisible by remember { mutableStateOf(false) }
 
     MaterialTheme {
@@ -35,11 +41,16 @@ fun FrameWindowScope.App(
                 modifier = Modifier
                     .height(WINDOW_SIZE.height - TOP_BAR_HEIGHT)
                     .width(WINDOW_SIZE.width)
+                    .background(Color(0xFF2F384B))
             ) {
 
                 when (currentScreen) {
+                    is Screen.Home -> Home()
                     is Screen.Timer -> Timer()
+                    is Screen.Alarm -> Alarm()
+                    is Screen.Tags -> Tags()
                     is Screen.Settings -> Settings()
+                    is Screen.About -> About()
                 }
 
                 AnimatedMenu(

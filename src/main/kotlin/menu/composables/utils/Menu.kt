@@ -4,8 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,15 +23,35 @@ fun Menu(
 ) {
     val menuItems = listOf(
         MenuItem(
+            Icons.Default.Home,
+            "Home",
+            Screen.Home,
+        ),
+        MenuItem(
             Icons.Default.Timer,
             "Timer",
             Screen.Timer,
         ),
         MenuItem(
+            Icons.Default.NotificationsActive,
+            "Alarm",
+            Screen.Alarm,
+        ),
+        MenuItem(
+            Icons.Default.Sell,
+            "Tags",
+            Screen.Tags,
+        ),
+        MenuItem(
             Icons.Default.Settings,
             "Settings",
             Screen.Settings,
-        )
+        ),
+        MenuItem(
+            Icons.Default.Help,
+            "About",
+            Screen.About,
+        ),
     )
 
     Column(

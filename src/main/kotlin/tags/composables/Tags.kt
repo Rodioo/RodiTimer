@@ -1,8 +1,8 @@
-package timer.composables
+package tags.composables
 
 import androidx.compose.runtime.Composable
 
 @Composable
-fun Timer() {
+fun Tags() {
 
 }
