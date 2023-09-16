@@ -1,32 +1,38 @@
 package home.viewmodels
 
-import androidx.compose.runtime.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-//Clean this
 class HomeViewModel {
-    var isTimerRunning by mutableStateOf(false)
-    var startTime by mutableStateOf(10L)
+    private val _isTimerRunning = MutableStateFlow(false)
+        val isTimerRunning = _isTimerRunning.asStateFlow()
+
+    private val _maxTime = MutableStateFlow(60L)
+        val maxTime = _maxTime.asStateFlow()
+
+    private val _startTime = MutableStateFlow(_maxTime.value)
+        val startTime = _startTime.asStateFlow()
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     private fun playTimer() {
-        isTimerRunning = true
+        _isTimerRunning.value = true
 
         coroutineScope.launch {
-            while (startTime > 0 && isTimerRunning) {
+            while (_startTime.value > 0 && _isTimerRunning.value) {
                 delay(1_000L)
-                startTime--
+                _startTime.value--
             }
         }
     }
 
     private fun pauseTimer() {
-        isTimerRunning = false
+        _isTimerRunning.value = false
     }
 
     fun handlePlayPause() {
-        if (isTimerRunning) {
+        if (_isTimerRunning.value) {
             pauseTimer()
         } else {
             playTimer()

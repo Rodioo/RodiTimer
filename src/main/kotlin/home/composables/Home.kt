@@ -15,6 +15,10 @@ import common.formatTime
 fun Home(
     viewModel: HomeViewModel = remember { HomeViewModel() }
 ) {
+    val startTime by viewModel.startTime.collectAsState()
+    val maxTime by viewModel.maxTime.collectAsState()
+    val isTimerRunning by viewModel.isTimerRunning.collectAsState()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
@@ -26,16 +30,16 @@ fun Home(
             secondaryColor = Color.Gray,
             backgroundColor = Color(0xFF2F384B),
             circleRadius = 175f,
-            value = viewModel.startTime,
-            maxValue = 10L,
-            formattedValue = viewModel.startTime.formatTime(),
+            value = startTime,
+            maxValue = maxTime,
+            formattedValue = startTime.formatTime(),
             modifier = Modifier.size(350.dp)
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         PlayPauseButton(
-            isRunning = viewModel.isTimerRunning,
+            isRunning = isTimerRunning,
             onClick = { viewModel.handlePlayPause() }
         )
 
