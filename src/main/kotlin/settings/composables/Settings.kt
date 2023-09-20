@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import common.resources.BACKGROUND_COLOR
 
 
 @Preview()
@@ -15,7 +15,7 @@ fun Settings() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF2F384B))
+            .background(BACKGROUND_COLOR)
     ) {
 
     }

@@ -7,7 +7,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.*
 import menu.composables.AnimatedMenu
 import home.composables.Home
@@ -16,6 +15,7 @@ import common.resources.WINDOW_SIZE
 import navigation.Screen
 import settings.composables.Settings
 import common.composables.TopBar
+import common.resources.BACKGROUND_COLOR
 import tags.composables.Tags
 import timer.composables.Timer
 
@@ -41,7 +41,7 @@ fun FrameWindowScope.App(
                 modifier = Modifier
                     .height(WINDOW_SIZE.height - TOP_BAR_HEIGHT)
                     .width(WINDOW_SIZE.width)
-                    .background(Color(0xFF2F384B))
+                    .background(BACKGROUND_COLOR)
             ) {
 
                 when (currentScreen) {

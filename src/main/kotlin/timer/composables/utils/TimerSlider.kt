@@ -1,5 +1,6 @@
 package timer.composables.utils
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Slider
 import androidx.compose.material.SliderColors
@@ -8,7 +9,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import common.resources.BACKGROUND_COLOR
+import common.resources.TOP_BAR_BACKGROUND_COLOR
 
 @Composable
 fun TimerSlider(
@@ -17,34 +23,39 @@ fun TimerSlider(
     onValueChange: (Float) -> Unit,
     valueRange: ClosedFloatingPointRange<Float>,
     formatValueFunction: Long.() -> String = Long::toString,
-    sliderColors: SliderColors = SliderDefaults.colors(),
+    colors: SliderColors = SliderDefaults.colors(),
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 32.dp, end = 32.dp)
+
     ) {
 
         Text(
             text = label,
+            color = Color.White.copy(alpha = 0.3f),
+            fontSize = 16.sp,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         Text(
             text = value.formatValueFunction(),
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            color = Color.White.copy(alpha = 0.8f),
+            fontSize = 14.sp,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .background(TOP_BAR_BACKGROUND_COLOR.copy(0.4f))
+                .padding(8.dp)
         )
 
         Slider(
             value = value.toFloat(),
             onValueChange = { onValueChange(it) },
             valueRange = valueRange,
-            colors = sliderColors
+            colors = colors
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }

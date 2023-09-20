@@ -19,4 +19,8 @@ class TimerViewModel {
             TimerConfigurationType.ROUNDS -> _timerConfiguration.onNumberOfRoundsSliderChange(newSliderValue)
         }
     }
+
+    fun resetTimerConfiguration() {
+        _timerConfiguration.value = TimerConfiguration()
+    }
 }

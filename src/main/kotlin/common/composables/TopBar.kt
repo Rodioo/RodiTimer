@@ -20,7 +20,7 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
-import androidx.compose.ui.window.WindowScope
+import common.resources.TOP_BAR_BACKGROUND_COLOR
 import common.resources.TOP_BAR_HEIGHT
 
 enum class TopBarButton(
@@ -55,7 +55,7 @@ fun FrameWindowScope.TopBar(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF181A1B))
+                .background(TOP_BAR_BACKGROUND_COLOR)
         ) {
             IconButton(
                 onClick = onClickMenu,

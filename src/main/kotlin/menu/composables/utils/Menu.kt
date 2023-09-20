@@ -9,8 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import common.resources.TOP_BAR_BACKGROUND_COLOR
+import common.resources.LEFT_MENU_BOTTOM_GRADIENT_COLOR
 import common.resources.TOP_BAR_HEIGHT
 import common.resources.WINDOW_SIZE
 import menu.models.MenuItem
@@ -61,8 +62,8 @@ fun Menu(
             .clip(RoundedCornerShape(bottomEnd = 24.dp))
             .background(
                 brush = Brush.verticalGradient(
-                    0.12f to Color(0xFF181A1B),
-                    1f to Color(0xFF3F4142)
+                    0.12f to TOP_BAR_BACKGROUND_COLOR,
+                    1f to LEFT_MENU_BOTTOM_GRADIENT_COLOR
                 )
             )
             .padding(4.dp)
