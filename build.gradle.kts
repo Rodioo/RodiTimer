@@ -1,8 +1,15 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
+// KMM Compose version which is compatible with Kotlin 1.8.22
+// https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
+compose {
+    kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:1.4.8")
+}
+
 plugins {
     kotlin("jvm")
     id("org.jetbrains.compose")
+    id("app.cash.sqldelight") version "2.0.0"
 }
 
 group = "com.tonio.rodi_timer"
@@ -27,14 +34,28 @@ dependencies {
 
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.3")
+
+    implementation("app.cash.sqldelight:sqlite-driver:2.0.0")
+}
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("com.tonio.database")
+        }
+    }
 }
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "ui.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+
+            //Module needed for SQLDelight compatibility with Compose Desktop
+            modules("java.sql")
+
             packageName = "RodiTimer"
             packageVersion = "1.0.0"
         }

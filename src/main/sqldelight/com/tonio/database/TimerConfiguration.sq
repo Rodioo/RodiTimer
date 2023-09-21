@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS TimerConfigurations (
+    id INTEGER PRIMARY KEY,
+    mainSeconds INTEGER NOT NULL,
+    shortBreakSeconds INTEGER NOT NULL,
+    longBreakSeconds INTEGER NOT NULL,
+    rounds INTEGER NOT NULL
+);
+
+insertTimerConfiguration:
+INSERT OR REPLACE
+INTO TimerConfigurations(id, mainSeconds, shortBreakSeconds, longBreakSeconds, rounds)
+VALUES (1, ?, ?, ?, ?);
+
+select:
+SELECT *
+FROM TimerConfigurations
+WHERE id = 1;
