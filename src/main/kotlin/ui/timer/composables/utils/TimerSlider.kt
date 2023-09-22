@@ -19,6 +19,7 @@ fun TimerSlider(
     label: String,
     value: Long,
     onValueChange: (Float) -> Unit,
+    onValueChangeFinished: (() -> Unit)? = null,
     valueRange: ClosedFloatingPointRange<Float>,
     formatValueFunction: Long.() -> String = Long::toString,
     colors: SliderColors = SliderDefaults.colors(),
@@ -52,6 +53,7 @@ fun TimerSlider(
         Slider(
             value = value.toFloat(),
             onValueChange = { onValueChange(it) },
+            onValueChangeFinished = onValueChangeFinished,
             valueRange = valueRange,
             colors = colors
         )

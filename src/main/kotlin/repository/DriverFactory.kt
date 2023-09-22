@@ -5,11 +5,11 @@ import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import com.tonio.database.Database
 
 interface Driver {
-    fun createDriver(): SqlDriver
+    fun createSQLiteDriver(): SqlDriver
 }
 
 class DriverFactory : Driver {
-    override fun createDriver(): SqlDriver {
+    override fun createSQLiteDriver(): SqlDriver {
         val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:test.db")
         Database.Schema.create(driver)
         return driver

@@ -31,6 +31,9 @@ fun Timer(
             onValueChange = {newSliderValue ->
                 viewModel.updateTimerConfiguration(TimerConfigurationType.MAIN, newSliderValue)
             },
+            onValueChangeFinished = {
+                viewModel.saveCurrentTimerConfiguration()
+            },
             valueRange = TimerConfigurationType.MAIN.valueRange,
             formatValueFunction = Long::formatTime,
             colors = SliderDefaults.colors(
@@ -45,6 +48,9 @@ fun Timer(
             value = timerConfiguration.shortBreakSeconds,
             onValueChange = {newSliderValue ->
                 viewModel.updateTimerConfiguration(TimerConfigurationType.SHORT_BREAK, newSliderValue)
+            },
+            onValueChangeFinished = {
+                viewModel.saveCurrentTimerConfiguration()
             },
             valueRange = TimerConfigurationType.SHORT_BREAK.valueRange,
             formatValueFunction = Long::formatTime,
@@ -61,6 +67,9 @@ fun Timer(
             onValueChange = {newSliderValue ->
                 viewModel.updateTimerConfiguration(TimerConfigurationType.LONG_BREAK, newSliderValue)
             },
+            onValueChangeFinished = {
+                viewModel.saveCurrentTimerConfiguration()
+            },
             valueRange = TimerConfigurationType.LONG_BREAK.valueRange,
             formatValueFunction = Long::formatTime,
             colors = SliderDefaults.colors(
@@ -75,6 +84,9 @@ fun Timer(
             value = timerConfiguration.rounds,
             onValueChange = {newSliderValue ->
                 viewModel.updateTimerConfiguration(TimerConfigurationType.ROUNDS, newSliderValue)
+            },
+            onValueChangeFinished = {
+                viewModel.saveCurrentTimerConfiguration()
             },
             valueRange = TimerConfigurationType.ROUNDS.valueRange,
             colors = SliderDefaults.colors(

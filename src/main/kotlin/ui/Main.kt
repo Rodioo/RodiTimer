@@ -9,11 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.*
-import com.tonio.database.Database
-import com.tonio.database.TimerConfigurations
 import repository.DriverFactory
 import repository.LocalDatabase
-import repository.TimerConfigurationDaoImpl
+import repository.dao.timerConfiguration.TimerConfigurationDaoImpl
 import ui.menu.composables.AnimatedMenu
 import ui.home.composables.Home
 import ui.common.resources.TOP_BAR_HEIGHT
@@ -26,7 +24,6 @@ import ui.tags.composables.Tags
 import ui.timer.composables.Timer
 import ui.timer.models.TimerConfiguration
 
-//TODO: add a local database with sqldelight to store the timer configuration
 @Composable
 fun FrameWindowScope.App(
     resetWindowSize: () -> Unit,
@@ -35,19 +32,6 @@ fun FrameWindowScope.App(
 ) {
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
     var isVisible by remember { mutableStateOf(false) }
-
-    val driver = DriverFactory().createDriver()
-    val db = LocalDatabase.getInstance(driver)
-
-    val timerConfigurationDao =  TimerConfigurationDaoImpl(db)
-
-    var result = timerConfigurationDao.get()
-
-    if (result == null) {
-        timerConfigurationDao.insert(TimerConfiguration())
-
-        result = timerConfigurationDao.get()
-    }
 
     MaterialTheme {
         Column {
@@ -65,9 +49,7 @@ fun FrameWindowScope.App(
             ) {
 
                 when (currentScreen) {
-                    is Screen.Home -> Home(
-                         result?.mainSeconds ?: 0L
-                    )
+                    is Screen.Home -> Home()
                     is Screen.Timer -> Timer()
                     is Screen.Alarm -> Alarm()
                     is Screen.Tags -> Tags()

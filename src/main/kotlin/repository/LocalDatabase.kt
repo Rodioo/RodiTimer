@@ -2,8 +2,10 @@ package repository
 
 import app.cash.sqldelight.db.SqlDriver
 import com.tonio.database.Database
+import repository.dao.timerConfiguration.TimerConfigurationDaoImpl
 
 abstract class LocalDatabase : Database {
+
     companion object {
 
         @Volatile

@@ -13,11 +13,10 @@ import ui.common.formatTime
 
 @Composable
 fun Home(
-    mainSeconds: Long,
     viewModel: HomeViewModel = remember { HomeViewModel() }
 ) {
-    val startTime by viewModel.startTime.collectAsState()
-    val maxTime by viewModel.maxTime.collectAsState()
+    val time by viewModel.time.collectAsState()
+    val timerConfiguration by viewModel.timerConfiguration.collectAsState()
     val isTimerRunning by viewModel.isTimerRunning.collectAsState()
 
     Column(
@@ -31,9 +30,9 @@ fun Home(
             secondaryColor = Color.Gray,
             backgroundColor = Color(0xFF2F384B),
             circleRadius = 175f,
-            value = mainSeconds,
-            maxValue = maxTime,
-            formattedValue = mainSeconds.formatTime(),
+            value = time,
+            maxValue = timerConfiguration.mainSeconds,
+            formattedValue = time.formatTime(),
             modifier = Modifier.size(350.dp)
         )
 
