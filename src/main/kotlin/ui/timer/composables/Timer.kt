@@ -39,7 +39,7 @@ fun Timer(
             colors = SliderDefaults.colors(
                 thumbColor = MAIN_SLIDER_COLOR,
                 activeTrackColor = MAIN_SLIDER_COLOR,
-                inactiveTrackColor = TOP_BAR_BACKGROUND_COLOR.copy(alpha = 0.3f)
+                inactiveTrackColor = DIVIDER_COLOR
             )
         )
 
@@ -57,7 +57,7 @@ fun Timer(
             colors = SliderDefaults.colors(
                 thumbColor = SHORT_BREAK_SLIDER_COLOR,
                 activeTrackColor = SHORT_BREAK_SLIDER_COLOR,
-                inactiveTrackColor = TOP_BAR_BACKGROUND_COLOR.copy(alpha = 0.3f)
+                inactiveTrackColor = DIVIDER_COLOR
             )
         )
 
@@ -75,7 +75,7 @@ fun Timer(
             colors = SliderDefaults.colors(
                 thumbColor = LONG_BREAK_SLIDER_COLOR,
                 activeTrackColor = LONG_BREAK_SLIDER_COLOR,
-                inactiveTrackColor = TOP_BAR_BACKGROUND_COLOR.copy(alpha = 0.3f)
+                inactiveTrackColor = DIVIDER_COLOR
             )
         )
 
@@ -92,7 +92,7 @@ fun Timer(
             colors = SliderDefaults.colors(
                 thumbColor = ROUNDS_SLIDER_COLOR,
                 activeTrackColor = ROUNDS_SLIDER_COLOR,
-                inactiveTrackColor = TOP_BAR_BACKGROUND_COLOR.copy(alpha = 0.3f)
+                inactiveTrackColor = DIVIDER_COLOR
             )
         )
 

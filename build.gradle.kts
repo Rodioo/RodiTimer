@@ -8,7 +8,7 @@ compose {
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.compose")
+    id("org.jetbrains.compose") version "1.5.0-dev1114"
     id("app.cash.sqldelight") version "2.0.0"
 }
 
@@ -35,7 +35,12 @@ dependencies {
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.3")
 
+    //SQLDelight
     implementation("app.cash.sqldelight:sqlite-driver:2.0.0")
+    
+    //Material3
+    implementation("org.jetbrains.compose.material3:material3:1.5.10-beta01")
+
 }
 
 sqldelight {

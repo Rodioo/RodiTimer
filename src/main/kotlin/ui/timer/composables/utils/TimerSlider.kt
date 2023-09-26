@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ui.common.resources.TEXT_COLOR
 import ui.common.resources.TOP_BAR_BACKGROUND_COLOR
 
 @Composable
@@ -42,7 +43,7 @@ fun TimerSlider(
 
         Text(
             text = value.formatValueFunction(),
-            color = Color.White.copy(alpha = 0.8f),
+            color = TEXT_COLOR,
             fontSize = 14.sp,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
