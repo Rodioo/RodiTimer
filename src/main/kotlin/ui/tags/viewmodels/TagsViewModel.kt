@@ -67,6 +67,8 @@ class TagsViewModel {
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     getTags()
+                } else if (response.needsConfirmation) {
+
                 } else {
                     _error.value = response.additionalMessage
                 }

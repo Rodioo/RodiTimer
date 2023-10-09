@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS Tags (
 getTagByLabel:
 SELECT *
 FROM Tags
-WHERE label LIKE ('%' || :label || '%');
+WHERE label = :label;
 
 getAllTags:
 SELECT *

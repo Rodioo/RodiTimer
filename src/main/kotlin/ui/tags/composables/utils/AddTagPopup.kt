@@ -25,21 +25,32 @@ import com.godaddy.android.colorpicker.ClassicColorPicker
 import com.godaddy.android.colorpicker.HsvColor
 import ui.common.composables.ConfirmationPopup
 import ui.common.composables.StyledButton
+import ui.common.getRandomColor
 import ui.common.resources.*
 import ui.tags.models.AddEditPopupButton
 import ui.tags.models.Tag
 import java.awt.Cursor
 
+
+//TODO: De editat Confirmation Popup sa accepte ca content un composable in loc de text string
 @Composable
-fun EditTagPopup(
-    tag: Tag,
-    onEditTag: (Tag) -> Unit,
-    onDeleteTag: (Tag) -> Unit,
+fun AddTagPopup(
+    onCheckTagByLabel: (String) -> Tag,
+    onAddTag: (Tag) -> Unit,
     onClosePopup: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var showDeleteConfirmation by remember {
+    var showTagExistsPopup by remember {
         mutableStateOf(false)
+    }
+
+    var tagToAdd by remember {
+        mutableStateOf(
+            Tag(
+                label = "",
+                color = getRandomColor()
+            )
+        )
     }
 
     Dialog(
@@ -51,29 +62,89 @@ fun EditTagPopup(
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                EditTagPopupHeader(
-                    onDelete = {
-                        showDeleteConfirmation = true
-                    },
+                AddTagPopupHeader(
                     onClose = onClosePopup
                 )
 
-                EditTagPopupBody(
-                    tag = tag,
-                    onEditTag = onEditTag,
-                    onClosePopup = onClosePopup
-                )
+                Column(
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxSize().padding(16.dp)
+                ) {
+                    TextField(
+                        value = tagToAdd.label,
+                        onValueChange = {
+                            tagToAdd = tagToAdd.copy(label = it)
+                        },
+                        textStyle = TextStyle(
+                            color = TEXT_COLOR,
+                            fontSize = 18.sp
+                        ),
+                        singleLine = true,
+                        shape = RoundedCornerShape(8.dp),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = DIVIDER_COLOR,
+                            unfocusedContainerColor = DIVIDER_COLOR
+                        ),
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = null,
+                                tint = TEXT_COLOR,
+                                modifier = Modifier.size(28.dp)
+                            )
+                        },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Filled.Sell,
+                                contentDescription = null,
+                                tint = tagToAdd.color,
+                                modifier = Modifier.size(28.dp)
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    ClassicColorPicker(
+                        onColorChanged = {
+                            tagToAdd = tagToAdd.copy(color = it.toColor())
+                        },
+                        color = HsvColor.from(tagToAdd.color),
+                        showAlphaBar = false,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.4f)
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    StyledButton(
+                        onClick = {
+                            val possibleExistingTag = onCheckTagByLabel(tagToAdd.label)
+                            if (tagToAdd.label == possibleExistingTag.label) {
+                                showTagExistsPopup = true
+                            } else {
+                                onAddTag(tagToAdd)
+                            }
+                        },
+                        text = "Add tag",
+                        textSize = 18.sp,
+                        leadingIcon = Icons.Default.Edit,
+                        backgroundColor = BUTTON_GREEN_BACKGROUND_COLOR,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
             }
 
-            if (showDeleteConfirmation) {
+            if (showTagExistsPopup) {
                 ConfirmationPopup(
                     text = "Are you sure you want to delete this tag?",
                     onConfirm = {
-                        onDeleteTag(tag)
-                        onClosePopup()
+                        onAddTag(tagToAdd)
                     },
                     onCancel = {
-                        showDeleteConfirmation = false
+                        showTagExistsPopup = false
                     },
                     confirmText = "Delete",
                     confirmColor = BUTTON_RED_BACKGROUND_COLOR,
@@ -85,13 +156,18 @@ fun EditTagPopup(
 }
 
 @Composable
-private fun EditTagPopupBody(
-    tag: Tag,
-    onEditTag: (Tag) -> Unit,
+private fun AddTagPopupBody(
+    onCheckTagByLabel: (String) -> Tag,
+    onAddTag: (Tag) -> Unit,
     onClosePopup: () -> Unit
 ) {
     var editableTag by remember {
-        mutableStateOf(tag)
+        mutableStateOf(
+            Tag(
+                label = "",
+                color = getRandomColor()
+            )
+        )
     }
 
     Column(
@@ -149,10 +225,9 @@ private fun EditTagPopupBody(
 
         StyledButton(
             onClick = {
-                onEditTag(editableTag)
-                onClosePopup()
+                onCheckTagByLabel(editableTag.label)
             },
-            text = "Save tag",
+            text = "Add tag",
             textSize = 18.sp,
             leadingIcon = Icons.Default.Edit,
             backgroundColor = BUTTON_GREEN_BACKGROUND_COLOR,
@@ -163,8 +238,7 @@ private fun EditTagPopupBody(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun EditTagPopupHeader(
-    onDelete: () -> Unit,
+private fun AddTagPopupHeader(
     onClose: () -> Unit
 ) {
     var hoveredOverItem by remember {
@@ -172,38 +246,21 @@ private fun EditTagPopupHeader(
     }
 
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth().height(TOP_BAR_HEIGHT)
     ) {
-        Icon(
-            imageVector = AddEditPopupButton.DELETE.icon,
-            contentDescription = AddEditPopupButton.DELETE.description,
-            tint = TEXT_COLOR,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .size(36.dp)
-                .clickable {
-                    onDelete()
-                }
-                .pointerHoverIcon(PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)))
-                .onPointerEvent(PointerEventType.Enter) {
-                    hoveredOverItem = AddEditPopupButton.DELETE
-                }
-                .onPointerEvent(PointerEventType.Exit) {
-                    hoveredOverItem = null
-                }
-                .background(color = if (hoveredOverItem == AddEditPopupButton.DELETE) Color.LightGray else Color.Transparent)
-        )
 
         Text(
-            text = "Edit Tag",
+            text = "Add Tag",
             style = TextStyle(
                 color = TEXT_COLOR,
                 fontSize = 20.sp,
                 letterSpacing = 2.sp,
-            )
+            ),
         )
+
+        Spacer(modifier = Modifier.weight(1f))
 
         Icon(
             imageVector = AddEditPopupButton.CLOSE.icon,

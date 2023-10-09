@@ -58,7 +58,7 @@ class TagDaoImpl(
         }
     }
 
-    override fun insert(tag: Tag, updateIfAlreadyExists: Boolean): DatabaseResponse<Tag?> {
+    override fun insert(tag: Tag): DatabaseResponse<Tag?> {
         val possibleExistingTag = getByLabel(tag.label).data
         if (possibleExistingTag == null) {
             return try {
@@ -79,19 +79,17 @@ class TagDaoImpl(
                     additionalMessage = "Failed to insert tag in database.\n Please reload the screen."
                 )
             }
-        } else if (possibleExistingTag.label == tag.label && !updateIfAlreadyExists) {
+        } else if (possibleExistingTag.label == tag.label) {
             return DatabaseResponse(
                 type = DatabaseResponseType.NEEDS_CONFIRMATION,
                 data = possibleExistingTag,
                 additionalMessage = ""
             )
         } else {
-            return update(
-                Tag(
-                    id = possibleExistingTag.id,
-                    label = tag.label,
-                    color = tag.color
-                )
+            return DatabaseResponse(
+                type = DatabaseResponseType.FAILED,
+                data = null,
+                additionalMessage = "Failed to insert tag in database.\n Please reload the screen."
             )
         }
     }

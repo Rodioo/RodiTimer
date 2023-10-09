@@ -10,7 +10,7 @@ interface TagDao {
 
     fun getAll(): DatabaseResponse<List<Tag>?>
 
-    fun insert(tag: Tag, updateIfAlreadyExists: Boolean = false): DatabaseResponse<Tag?>
+    fun insert(tag: Tag): DatabaseResponse<Tag?>
 
     fun update(newTag: Tag): DatabaseResponse<Tag?>
 

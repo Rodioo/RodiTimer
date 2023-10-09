@@ -49,3 +49,7 @@ fun <T> debounce(
         }
     }
 }
+
+fun getRandomColor(): Color {
+    return Color.Red
+}
