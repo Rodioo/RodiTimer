@@ -1,18 +1,20 @@
 package ui.tags.viewmodels
 
-import androidx.compose.ui.graphics.Color
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
+import repository.DriverFactory
+import repository.dao.tag.TagDao
+import repository.dao.tag.TagDaoImpl
 import ui.tags.models.Tag
 
+//TODO: insert and select to test if the db works and after that refactor the color in the adapter
 class TagsViewModel {
     private val viewModelJob = Job()
     private val mainScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     private val dbScope = CoroutineScope(viewModelJob + Dispatchers.IO)
+
+    private val tagDao: TagDao
 
     private val _error = MutableStateFlow<String?>(null)
         val error = _error.asStateFlow()
@@ -22,58 +24,80 @@ class TagsViewModel {
         val tags = _tags.asStateFlow()
 
     init {
-        _allTags = getTags()
-        _tags.value = _allTags
+        val driver = DriverFactory().createSQLiteDriver()
+        tagDao =  TagDaoImpl(driver)
+
+        getTags()
     }
 
-    private fun getTags(): List<Tag> {
-        return listOf(
-            Tag(
-                id = 1,
-                color = Color.Red,
-                label = "Study"
-            ),
-            Tag(
-                id = 2,
-                color = Color.Green,
-                label = "Entertainment"
-            ),
-            Tag(
-                id = 3,
-                color = Color.Yellow,
-                label = "Read"
-            ),
-            Tag(
-                id = 4,
-                color = Color.Blue,
-                label = "Work"
-            ),
-            Tag(
-                id = 5,
-                color = Color.Magenta,
-                label = "Social"
-            ),
-            Tag(
-                id = 6,
-                color = Color.White,
-                label = "Project"
-            ),
-            Tag(
-                id = 7,
-                color = Color.Yellow,
-                label = "Public Event"
-            ),Tag(
-                id = 8,
-                color = Color.Green,
-                label = "Nap"
-            ),
+    private fun getTags() {
+        dbScope.launch {
+            val response = tagDao.getAll()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _allTags = response.data ?: listOf()
+                    _tags.value = _allTags
+                } else {
+                    _allTags = listOf()
+                    _tags.value = _allTags
 
-            Tag(
-                id = 9,
-                color = Color.Cyan,
-                label = "Other"
-            ),
-        )
+                    _error.value = response.additionalMessage
+                }
+            }
+        }
+    }
+
+    //TODO: research if its better to use withContext here instead of dbScope.launch
+    suspend fun getTagByLabel(label: String): Tag? = withContext(Dispatchers.IO) {
+        var tag: Tag? = null
+
+        val response = tagDao.getByLabel(label)
+        if (response.isSuccessful) {
+            tag = response.data
+        } else {
+            _error.value = response.additionalMessage
+        }
+
+        return@withContext tag
+    }
+
+    fun insertTag(tag: Tag, updateIfAlreadyExists: Boolean = false) {
+        dbScope.launch {
+            val response = tagDao.insert(tag, updateIfAlreadyExists)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    getTags()
+                } else {
+                    _error.value = response.additionalMessage
+                }
+            }
+        }
+    }
+
+    fun updateTag(newTag: Tag) {
+        dbScope.launch {
+            val response = tagDao.update(newTag)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    getTags()
+                } else {
+                    _error.value = response.additionalMessage
+                }
+            }
+        }
+    }
+
+    fun deleteTag(id: Long?) {
+        dbScope.launch {
+            val response = tagDao.delete(id)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    getTags()
+                } else {
+                    _error.value = response.additionalMessage
+                }
+            }
+        }
     }
 
     fun filterTags(query: String) {

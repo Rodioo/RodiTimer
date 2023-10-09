@@ -6,12 +6,13 @@ CREATE TABLE IF NOT EXISTS TimerConfigurations (
     rounds INTEGER NOT NULL
 );
 
+getTimerConfiguration:
+SELECT *
+FROM TimerConfigurations
+WHERE id = 1;
+
 insertTimerConfiguration:
 INSERT OR REPLACE
 INTO TimerConfigurations(id, mainSeconds, shortBreakSeconds, longBreakSeconds, rounds)
 VALUES (1, ?, ?, ?, ?);
 
-select:
-SELECT *
-FROM TimerConfigurations
-WHERE id = 1;

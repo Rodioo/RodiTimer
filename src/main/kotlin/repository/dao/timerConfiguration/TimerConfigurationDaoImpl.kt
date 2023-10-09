@@ -1,7 +1,6 @@
 package repository.dao.timerConfiguration
 
 import app.cash.sqldelight.db.SqlDriver
-import com.tonio.database.Database
 import repository.DatabaseResponse
 import repository.DatabaseResponseType
 import repository.LocalDatabase
@@ -14,7 +13,7 @@ class TimerConfigurationDaoImpl(
 
     override fun get(): DatabaseResponse<TimerConfiguration?> {
         return try {
-            val result = database.timerConfigurationQueries.select().executeAsOne()
+            val result = database.timerConfigurationQueries.getTimerConfiguration().executeAsOne()
             DatabaseResponse(
                 type = DatabaseResponseType.SUCCESS,
                 data = TimerConfiguration(
@@ -28,7 +27,7 @@ class TimerConfigurationDaoImpl(
             DatabaseResponse(
                 type = DatabaseResponseType.FAILED,
                 data = null,
-                exceptionMessage = "Failed to get saved timer configuration.\n Please reload the screen."
+                additionalMessage = "Failed to get saved timer configuration.\n Please reload the screen."
             )
         }
     }
@@ -48,9 +47,9 @@ class TimerConfigurationDaoImpl(
             )
         } catch (exception: Exception) {
             DatabaseResponse(
-                type = DatabaseResponseType.SUCCESS,
+                type = DatabaseResponseType.FAILED,
                 data = null,
-                exceptionMessage = "Failed to insert timer configuration in database.\n Please reload the screen."
+                additionalMessage = "Failed to insert timer configuration in database.\n Please reload the screen."
             )
         }
 

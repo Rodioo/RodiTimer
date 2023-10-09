@@ -16,7 +16,9 @@ import androidx.compose.ui.unit.sp
 
 private const val CIRCLE_THICKNESS_DIVIDER = 30f
 
-@OptIn(ExperimentalTextApi::class)
+//TODO: maybe refactor in the future so that it takes a tag argument instead of label and primary color
+//TODO: this needs to be tested because what would happen if the timer is currently short break or long break
+//TODO: potential solutions are either to add the breaks as tags or add some ternary operators
 @Composable
 fun CircularSlider(
     primaryColor: Color,
@@ -26,6 +28,7 @@ fun CircularSlider(
     value: Long,
     maxValue: Long,
     formattedValue: String,
+    label: String,
     modifier: Modifier = Modifier,
 ) {
     var circleCenter by remember {
@@ -103,7 +106,7 @@ fun CircularSlider(
 
             drawText(
                 textMeasurer = topicTextMeasurer,
-                text = "Entertainment",
+                text = label,
                 style = TextStyle(
                     fontSize = (circleRadius / 7f).sp,
                     color = Color.White,

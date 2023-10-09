@@ -40,7 +40,7 @@ class TimerViewModel {
                 if (response.isSuccessful) {
                     _timerConfiguration.value = response.data ?: _timerConfiguration.value
                 } else {
-                    _error.value = response.exceptionMessage
+                    _error.value = response.additionalMessage
                 }
             }
         }
@@ -53,7 +53,7 @@ class TimerViewModel {
                 if (response.isSuccessful) {
                     _timerConfiguration.value = response.data ?: _timerConfiguration.value
                 } else {
-                    _error.value = response.exceptionMessage
+                    _error.value = response.additionalMessage
                 }
             }
         }

@@ -16,6 +16,7 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ui.common.resources.DIVIDER_COLOR
+import ui.common.resources.TAGS_MARGIN
 import ui.common.resources.TEXT_COLOR
 import ui.tags.models.Tag
 import java.awt.Cursor
@@ -25,21 +26,22 @@ fun Tag(
     tag: Tag,
     onEditTag: (Tag) -> Unit
 ) {
-    Column {
+    Column(
+        modifier = Modifier
+            .clickable { onEditTag(tag) }
+            .pointerHoverIcon(PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)))
+    ) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(start = TAGS_MARGIN)
         ) {
             Icon(
                 imageVector = Icons.Filled.Sell,
                 contentDescription = null,
                 tint = tag.color,
-                modifier = Modifier
-                    .clickable { onEditTag(tag) }
-                    .size(28.dp)
-                    .pointerHoverIcon(PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)))
+                modifier = Modifier.size(28.dp)
             )
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -47,7 +49,7 @@ fun Tag(
             Text(
                 text = tag.label,
                 fontSize = 20.sp,
-                color = TEXT_COLOR
+                color = TEXT_COLOR,
             )
         }
 

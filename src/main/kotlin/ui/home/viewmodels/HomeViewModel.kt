@@ -42,7 +42,7 @@ class HomeViewModel {
                     _timerConfiguration.value = response.data ?: _timerConfiguration.value
                     _time.value = _timerConfiguration.value.mainSeconds
                 } else {
-                    _error.value = response.exceptionMessage
+                    _error.value = response.additionalMessage
                 }
             }
         }

@@ -41,6 +41,8 @@ dependencies {
     //Material3
     implementation("org.jetbrains.compose.material3:material3:1.5.10-beta01")
 
+    implementation("com.godaddy.android.colorpicker:compose-color-picker-jvm:0.7.0")
+
 }
 
 sqldelight {

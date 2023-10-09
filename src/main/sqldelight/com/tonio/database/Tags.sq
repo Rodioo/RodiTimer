@@ -1,0 +1,33 @@
+import androidx.compose.ui.graphics.Color;
+
+CREATE TABLE IF NOT EXISTS Tags (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    label TEXT NOT NULL UNIQUE,
+    color TEXT AS Color NOT NULL
+);
+
+getTagByLabel:
+SELECT *
+FROM Tags
+WHERE label LIKE ('%' || :label || '%');
+
+getAllTags:
+SELECT *
+FROM Tags;
+
+insertTag:
+INSERT
+INTO Tags
+VALUES (?, ?, ?);
+
+updateTag:
+UPDATE Tags
+SET label = :label,
+    color = :color
+WHERE id = :id;
+
+deleteTag:
+DELETE
+FROM Tags
+WHERE id = :id;
+

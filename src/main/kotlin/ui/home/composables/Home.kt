@@ -33,6 +33,7 @@ fun Home(
             value = time,
             maxValue = timerConfiguration.mainSeconds,
             formattedValue = time.formatTime(),
+            label = "asd_asd_asd_asd_asd_",
             modifier = Modifier.size(350.dp)
         )
 

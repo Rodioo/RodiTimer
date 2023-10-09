@@ -1,6 +1,5 @@
 package ui.common.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,18 +15,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ui.common.resources.*
 import java.awt.Cursor
 
 @Composable
-fun ResetToDefaultButton(
+fun StyledButton(
     onClick : () -> Unit,
-    backgroundColor: Color = Color(0xFFE63B2E),
-    contentColor: Color = Color.White.copy(0.9f),
+    text: String,
+    textSize: TextUnit = 18.sp,
+    leadingIcon: ImageVector? = null,
+    leadingIconSize: Dp = 20.dp,
+    backgroundColor: Color = BUTTON_DEFAULT_BACKGROUND_COLOR,
+    contentColor: Color = TEXT_COLOR,
     modifier : Modifier = Modifier
 ) {
     Button(
@@ -38,23 +46,25 @@ fun ResetToDefaultButton(
             .pointerHoverIcon(PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)))
     ) {
         Box {
-            Icon(
-                imageVector = Icons.Default.RestartAlt,
-                contentDescription = null,
-                tint = contentColor,
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .size(20.dp)
-            )
+            if (leadingIcon != null) {
+                Icon(
+                    imageVector = leadingIcon,
+                    contentDescription = null,
+                    tint = contentColor,
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .size(leadingIconSize)
+                )
+            }
 
             Text(
-                text = "Reset to default",
-                color = contentColor,
+                text = text,
+                style = TextStyle(
+                    color = contentColor,
+                    fontSize = textSize,
+                ),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp,
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(start = 24.dp)
+                modifier = if (leadingIcon != null) Modifier.padding(start = 24.dp) else Modifier
             )
         }
     }

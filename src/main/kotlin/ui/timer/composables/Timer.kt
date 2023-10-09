@@ -2,18 +2,19 @@ package ui.timer.composables
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.SliderDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ui.common.composables.ResetToDefaultButton
+import ui.common.composables.StyledButton
 import ui.common.formatTime
 import ui.timer.composables.utils.TimerSlider
 import ui.timer.models.TimerConfigurationType
 import ui.timer.viewmodels.TimerViewModel
 import ui.common.resources.*
 
-//@TODO: IMPLEMENT TAGS SCREEN BY DEFINING SOME BASIC TAGS AND ALLOW THE USER TO ADD MORE TAGS (A TAG CONTAINS A LABEL AND A COLOR)
 //@TODO: Tie these tags with the home screen and the timer screen (the label changes and the slider color changes accordingly to the tag)
 @Composable
 fun Timer(
@@ -98,10 +99,13 @@ fun Timer(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ResetToDefaultButton(
+        StyledButton(
             onClick = {
                 viewModel.resetTimerConfiguration()
             },
+            text = "Reset to default",
+            leadingIcon = Icons.Default.RestartAlt,
+            backgroundColor = BUTTON_RED_BACKGROUND_COLOR,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
