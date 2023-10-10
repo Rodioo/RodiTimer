@@ -2,7 +2,6 @@ package ui.tags.composables
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.*
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,7 +31,6 @@ import ui.tags.viewmodels.TagsViewModel
 import java.awt.Cursor
 
 //TODO: fix bug on clicking outside the left menu when it's open
-//TODO: think of design for add button on new tags (either when searching, at the bottom, or fixed circle with + somewhere)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Tags(
@@ -185,8 +183,14 @@ fun Tags(
 
         if (displayAddPopup) {
             AddTagPopup(
+                onGetTagByLabel = {
+                    viewModel.getTagByLabel(it)
+                },
                 onAddTag = {
                     viewModel.insertTag(it)
+                },
+                onUpdateTag = {
+                    viewModel.updateTag(it)
                 },
                 onClosePopup = {
                     displayAddPopup = false

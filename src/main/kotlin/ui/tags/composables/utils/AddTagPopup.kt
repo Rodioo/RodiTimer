@@ -18,6 +18,7 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -35,13 +36,18 @@ import java.awt.Cursor
 //TODO: De editat Confirmation Popup sa accepte ca content un composable in loc de text string
 @Composable
 fun AddTagPopup(
-    onCheckTagByLabel: (String) -> Tag,
+    onGetTagByLabel: (String) -> Tag?,
     onAddTag: (Tag) -> Unit,
+    onUpdateTag: (Tag) -> Unit,
     onClosePopup: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showTagExistsPopup by remember {
         mutableStateOf(false)
+    }
+
+    var possibleExistingTag by remember {
+        mutableStateOf<Tag?>(null)
     }
 
     var tagToAdd by remember {
@@ -121,11 +127,12 @@ fun AddTagPopup(
 
                     StyledButton(
                         onClick = {
-                            val possibleExistingTag = onCheckTagByLabel(tagToAdd.label)
-                            if (tagToAdd.label == possibleExistingTag.label) {
+                            possibleExistingTag = onGetTagByLabel(tagToAdd.label)
+                            if (possibleExistingTag != null) {
                                 showTagExistsPopup = true
                             } else {
                                 onAddTag(tagToAdd)
+                                onClosePopup()
                             }
                         },
                         text = "Add tag",
@@ -137,102 +144,98 @@ fun AddTagPopup(
                 }
             }
 
-            if (showTagExistsPopup) {
+            if (showTagExistsPopup && possibleExistingTag != null) {
                 ConfirmationPopup(
-                    text = "Are you sure you want to delete this tag?",
                     onConfirm = {
-                        onAddTag(tagToAdd)
+                        tagToAdd = tagToAdd.copy(id = possibleExistingTag!!.id)
+                        onUpdateTag(tagToAdd)
+                        onClosePopup()
                     },
                     onCancel = {
                         showTagExistsPopup = false
                     },
-                    confirmText = "Delete",
-                    confirmColor = BUTTON_RED_BACKGROUND_COLOR,
-                    confirmIcon = Icons.Default.Delete,
-                )
+                    confirmText = "Update tag",
+                    confirmColor = BUTTON_GREEN_BACKGROUND_COLOR,
+                    confirmIcon = Icons.Default.Upgrade,
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "The tag with the label: ${tagToAdd.label} already exists with a different color!",
+                            style = TextStyle(
+                                color = TEXT_COLOR,
+                                fontSize = 14.sp,
+                                letterSpacing = 1.sp,
+                            ),
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = "Do you want to update the tag with the new color?",
+                            style = TextStyle(
+                                color = TEXT_COLOR,
+                                fontSize = 14.sp,
+                                letterSpacing = 1.sp,
+                            ),
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Sell,
+                                contentDescription = null,
+                                tint = possibleExistingTag!!.color,
+                                modifier = Modifier.size(28.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                text = possibleExistingTag!!.label,
+                                fontSize = 20.sp,
+                                color = TEXT_COLOR,
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Icon(
+                                imageVector = Icons.Filled.ArrowForward,
+                                contentDescription = null,
+                                tint = TEXT_COLOR,
+                                modifier = Modifier.size(28.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Icon(
+                                imageVector = Icons.Filled.Sell,
+                                contentDescription = null,
+                                tint = tagToAdd.color,
+                                modifier = Modifier.size(28.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                text = tagToAdd.label,
+                                fontSize = 20.sp,
+                                color = TEXT_COLOR,
+                            )
+                        }
+                    }
+                }
+
             }
         }
-    }
-}
-
-@Composable
-private fun AddTagPopupBody(
-    onCheckTagByLabel: (String) -> Tag,
-    onAddTag: (Tag) -> Unit,
-    onClosePopup: () -> Unit
-) {
-    var editableTag by remember {
-        mutableStateOf(
-            Tag(
-                label = "",
-                color = getRandomColor()
-            )
-        )
-    }
-
-    Column(
-        verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxSize().padding(16.dp)
-    ) {
-        TextField(
-            value = editableTag.label,
-            onValueChange = {
-                editableTag = editableTag.copy(label = it)
-            },
-            textStyle = TextStyle(
-                color = TEXT_COLOR,
-                fontSize = 18.sp
-            ),
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = DIVIDER_COLOR,
-                unfocusedContainerColor = DIVIDER_COLOR
-            ),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = null,
-                    tint = TEXT_COLOR,
-                    modifier = Modifier.size(28.dp)
-                )
-            },
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.Sell,
-                    contentDescription = null,
-                    tint = editableTag.color,
-                    modifier = Modifier.size(28.dp)
-                )
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        ClassicColorPicker(
-            onColorChanged = {
-                editableTag = editableTag.copy(color = it.toColor())
-            },
-            color = HsvColor.from(editableTag.color),
-            showAlphaBar = false,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.4f)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        StyledButton(
-            onClick = {
-                onCheckTagByLabel(editableTag.label)
-            },
-            text = "Add tag",
-            textSize = 18.sp,
-            leadingIcon = Icons.Default.Edit,
-            backgroundColor = BUTTON_GREEN_BACKGROUND_COLOR,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
     }
 }
 

@@ -18,6 +18,7 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -67,7 +68,6 @@ fun EditTagPopup(
 
             if (showDeleteConfirmation) {
                 ConfirmationPopup(
-                    text = "Are you sure you want to delete this tag?",
                     onConfirm = {
                         onDeleteTag(tag)
                         onClosePopup()
@@ -78,7 +78,18 @@ fun EditTagPopup(
                     confirmText = "Delete",
                     confirmColor = BUTTON_RED_BACKGROUND_COLOR,
                     confirmIcon = Icons.Default.Delete,
-                )
+                ) {
+                    Text(
+                        text = "Are you sure you want to delete this tag?",
+                        style = TextStyle(
+                            color = TEXT_COLOR,
+                            fontSize = 20.sp,
+                            letterSpacing = 1.sp,
+                        ),
+                        textAlign = TextAlign.Center,
+                    )
+                }
+
             }
         }
     }

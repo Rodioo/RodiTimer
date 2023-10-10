@@ -48,7 +48,7 @@ class TagsViewModel {
     }
 
     //TODO: research if its better to use withContext here instead of dbScope.launch
-    suspend fun getTagByLabel(label: String): Tag? = withContext(Dispatchers.IO) {
+    fun getTagByLabel(label: String): Tag? = runBlocking {
         var tag: Tag? = null
 
         val response = tagDao.getByLabel(label)
@@ -58,12 +58,12 @@ class TagsViewModel {
             _error.value = response.additionalMessage
         }
 
-        return@withContext tag
+        return@runBlocking tag
     }
 
-    fun insertTag(tag: Tag, updateIfAlreadyExists: Boolean = false) {
+    fun insertTag(tag: Tag) {
         dbScope.launch {
-            val response = tagDao.insert(tag, updateIfAlreadyExists)
+            val response = tagDao.insert(tag)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     getTags()

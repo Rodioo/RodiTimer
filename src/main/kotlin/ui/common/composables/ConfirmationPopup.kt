@@ -25,7 +25,6 @@ import ui.common.resources.TOP_BAR_BACKGROUND_COLOR
 
 @Composable
 fun ConfirmationPopup(
-    text: String,
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
     confirmText: String,
@@ -34,7 +33,8 @@ fun ConfirmationPopup(
     cancelColor: Color = BUTTON_DEFAULT_BACKGROUND_COLOR,
     confirmIcon: ImageVector = Icons.Default.Done,
     cancelIcon: ImageVector = Icons.Default.Cancel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ) {
     Dialog(
         onDismissRequest = onCancel
@@ -46,15 +46,7 @@ fun ConfirmationPopup(
                 .background(color = TOP_BAR_BACKGROUND_COLOR)
                 .padding(16.dp)
         ) {
-            Text(
-                text = text,
-                style = TextStyle(
-                    color = TEXT_COLOR,
-                    fontSize = 20.sp,
-                    letterSpacing = 1.sp,
-                ),
-                textAlign = TextAlign.Center,
-            )
+            content()
 
             Spacer(modifier = Modifier.height(64.dp))
 
