@@ -52,5 +52,9 @@ fun <T> debounce(
 
 //TODO: implement this
 fun getRandomColor(): Color {
-    return Color.Red
+    return Color(
+        red = (0..256).random(),
+        green = (0..256).random(),
+        blue = (0..256).random(),
+    )
 }

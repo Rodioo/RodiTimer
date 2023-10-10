@@ -33,7 +33,6 @@ import ui.tags.models.Tag
 import java.awt.Cursor
 
 
-//TODO: De editat Confirmation Popup sa accepte ca content un composable in loc de text string
 @Composable
 fun AddTagPopup(
     onGetTagByLabel: (String) -> Tag?,
@@ -248,9 +247,7 @@ private fun AddTagPopupHeader(
         mutableStateOf<AddEditPopupButton?>(null)
     }
 
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
+    Box(
         modifier = Modifier.fillMaxWidth().height(TOP_BAR_HEIGHT)
     ) {
 
@@ -261,16 +258,16 @@ private fun AddTagPopupHeader(
                 fontSize = 20.sp,
                 letterSpacing = 2.sp,
             ),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.align(Alignment.TopCenter)
         )
-
-        Spacer(modifier = Modifier.weight(1f))
 
         Icon(
             imageVector = AddEditPopupButton.CLOSE.icon,
             contentDescription = AddEditPopupButton.CLOSE.description,
             tint = TEXT_COLOR,
             modifier = Modifier
-                .align(Alignment.CenterVertically)
+                .align(Alignment.TopEnd)
                 .size(36.dp)
                 .clickable {
                     onClose()
