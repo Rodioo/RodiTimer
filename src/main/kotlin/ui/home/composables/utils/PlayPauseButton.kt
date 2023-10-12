@@ -18,11 +18,13 @@ import java.awt.Cursor
 
 @Composable
 fun PlayPauseButton(
+    onClick: () -> Unit,
     isRunning: Boolean,
-    onClick: () -> Unit
+    enabled: Boolean = true
 ) {
     IconButton(
         onClick = onClick,
+        enabled = enabled
     ) {
         Icon(
             imageVector = if (isRunning) Icons.Default.PauseCircleOutline else Icons.Default.PlayCircleOutline,
@@ -30,7 +32,13 @@ fun PlayPauseButton(
             tint = TEXT_COLOR,
             modifier = Modifier
                 .size(CIRCLE_BUTTON_SIZE)
-                .pointerHoverIcon(PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)))
+                .pointerHoverIcon(
+                    if (enabled) {
+                        PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR))
+                    } else {
+                        PointerIcon(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR))
+                    }
+                )
         )
     }
 }

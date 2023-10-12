@@ -13,6 +13,7 @@ import ui.common.formatTime
 
 @Composable
 fun Home(
+    isScreenDisabled: Boolean,
     viewModel: HomeViewModel = remember { HomeViewModel() }
 ) {
     val time by viewModel.time.collectAsState()
@@ -40,8 +41,9 @@ fun Home(
         Spacer(modifier = Modifier.height(24.dp))
 
         PlayPauseButton(
+            onClick = { viewModel.handlePlayPause() },
             isRunning = isTimerRunning,
-            onClick = { viewModel.handlePlayPause() }
+            enabled = !isScreenDisabled
         )
 
     }

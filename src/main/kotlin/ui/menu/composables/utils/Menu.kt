@@ -1,14 +1,17 @@
 package ui.menu.composables.utils
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import ui.common.resources.TOP_BAR_BACKGROUND_COLOR
 import ui.common.resources.LEFT_MENU_BOTTOM_GRADIENT_COLOR
@@ -19,7 +22,7 @@ import ui.navigation.Screen
 
 @Composable
 fun Menu(
-    onSelectMenuItem : (MenuItem) -> Unit,
+    onSelectMenuItem: (MenuItem) -> Unit,
     onCloseMenu: () -> Unit
 ) {
     val menuItems = listOf(
@@ -54,7 +57,6 @@ fun Menu(
             Screen.About,
         ),
     )
-
     Column(
         modifier = Modifier
             .height(WINDOW_SIZE.height - TOP_BAR_HEIGHT)
@@ -72,7 +74,7 @@ fun Menu(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        menuItems.map {item ->
+        menuItems.map { item ->
             MenuItem(
                 item,
                 onSelectItem = {

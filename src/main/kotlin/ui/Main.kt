@@ -3,11 +3,14 @@ package ui
 import ui.about.composables.About
 import ui.alarm.composables.Alarm
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import repository.DriverFactory
 import repository.LocalDatabase
@@ -49,7 +52,7 @@ fun FrameWindowScope.App(
             ) {
 
                 when (currentScreen) {
-                    is Screen.Home -> Home()
+                    is Screen.Home -> Home(isVisible)
                     is Screen.Timer -> Timer()
                     is Screen.Alarm -> Alarm()
                     is Screen.Tags -> Tags()
@@ -64,7 +67,7 @@ fun FrameWindowScope.App(
                     },
                     onCloseMenu = {
                         isVisible = false
-                    }
+                    },
                 )
             }
         }

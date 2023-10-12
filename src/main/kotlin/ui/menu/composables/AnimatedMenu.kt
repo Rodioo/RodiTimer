@@ -4,19 +4,22 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
 import ui.menu.composables.utils.Menu
 import ui.menu.models.MenuItem
 
 @Composable
 fun AnimatedMenu(
     isVisible: Boolean,
-    onSelectMenuItem : (MenuItem) -> Unit,
+    onSelectMenuItem: (MenuItem) -> Unit,
     onCloseMenu: () -> Unit,
 ) {
     val animationDurationMillis = 750
     val offsetX = -250
 
-    AnimatedVisibility(visible = isVisible,
+    AnimatedVisibility(
+        visible = isVisible,
         enter = slideInHorizontally(
             initialOffsetX = { offsetX },
             animationSpec = tween(
@@ -30,7 +33,7 @@ fun AnimatedMenu(
                 durationMillis = animationDurationMillis,
                 easing = FastOutSlowInEasing
             )
-        )
+        ),
     ) {
         Menu(
             onSelectMenuItem = onSelectMenuItem,
