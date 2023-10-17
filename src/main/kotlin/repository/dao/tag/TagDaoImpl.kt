@@ -19,7 +19,8 @@ class TagDaoImpl(
                 data = Tag(
                     id = result.id,
                     label = result.label,
-                    color = result.color
+                    color = result.color,
+                    isFavorite = result.isFavorite
                 )
             )
         } catch (exception: NullPointerException) {
@@ -40,7 +41,8 @@ class TagDaoImpl(
                     Tag(
                         id = it.id,
                         label = it.label,
-                        color = it.color
+                        color = it.color,
+                        isFavorite = it.isFavorite
                     )
                 )
             }
@@ -65,7 +67,8 @@ class TagDaoImpl(
                 database.tagsQueries.insertTag(
                     id = null,
                     label = tag.label,
-                    color = tag.color
+                    color = tag.color,
+                    isFavorite = tag.isFavorite
                 )
 
                 DatabaseResponse(
@@ -99,7 +102,8 @@ class TagDaoImpl(
             database.tagsQueries.updateTag(
                 id = newTag.id ?: throw NullPointerException(),
                 label = newTag.label,
-                color = newTag.color
+                color = newTag.color,
+                isFavorite = newTag.isFavorite
             )
 
             DatabaseResponse(

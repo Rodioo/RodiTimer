@@ -1,9 +1,11 @@
 import androidx.compose.ui.graphics.Color;
+import kotlin.Boolean;
 
 CREATE TABLE IF NOT EXISTS Tags (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     label TEXT NOT NULL UNIQUE,
-    color TEXT AS Color NOT NULL
+    color TEXT AS Color NOT NULL,
+    isFavorite INTEGER AS Boolean NOT NULL DEFAULT 0
 );
 
 getTagByLabel:
@@ -18,12 +20,13 @@ FROM Tags;
 insertTag:
 INSERT
 INTO Tags
-VALUES (?, ?, ?);
+VALUES (?, ?, ?, ?);
 
 updateTag:
 UPDATE Tags
 SET label = :label,
-    color = :color
+    color = :color,
+    isFavorite = :isFavorite
 WHERE id = :id;
 
 deleteTag:

@@ -8,7 +8,7 @@ compose {
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.compose") version "1.5.0-dev1114"
+    id("org.jetbrains.compose") version "1.5.10-beta01"
     id("app.cash.sqldelight") version "2.0.0"
 }
 

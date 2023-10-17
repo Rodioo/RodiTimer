@@ -146,7 +146,10 @@ fun AddTagPopup(
             if (showTagExistsPopup && possibleExistingTag != null) {
                 ConfirmationPopup(
                     onConfirm = {
-                        tagToAdd = tagToAdd.copy(id = possibleExistingTag!!.id)
+                        tagToAdd = tagToAdd.copy(
+                            id = possibleExistingTag!!.id,
+                            isFavorite = possibleExistingTag!!.isFavorite
+                        )
                         onUpdateTag(tagToAdd)
                         onClosePopup()
                     },

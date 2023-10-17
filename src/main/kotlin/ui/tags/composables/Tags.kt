@@ -145,6 +145,10 @@ fun Tags(
                                 onEditTag = { editableTag ->
                                     editTag = editableTag
                                     displayEditPopup = true
+                                },
+                                onUpdateFavoriteStatus = {
+                                    val tag = it.copy(isFavorite = !it.isFavorite)
+                                    viewModel.updateTag(tag)
                                 }
                             )
                         }

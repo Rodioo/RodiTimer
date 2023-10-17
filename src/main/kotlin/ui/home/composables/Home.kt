@@ -30,12 +30,12 @@ fun Home(
             primaryColor = Color.Blue,
             secondaryColor = Color.Gray,
             backgroundColor = Color(0xFF2F384B),
-            circleRadius = 175f,
+            circleRadius = 200.dp,
             value = time,
             maxValue = timerConfiguration.mainSeconds,
             formattedValue = time.formatTime(),
             label = "asd_asd_asd_asd_asd_",
-            modifier = Modifier.size(350.dp)
+            modifier = Modifier.size(400.dp)
         )
 
         Spacer(modifier = Modifier.height(24.dp))

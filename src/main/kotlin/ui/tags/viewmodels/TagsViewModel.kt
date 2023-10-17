@@ -8,7 +8,6 @@ import repository.dao.tag.TagDao
 import repository.dao.tag.TagDaoImpl
 import ui.tags.models.Tag
 
-//TODO: insert and select to test if the db works and after that refactor the color in the adapter
 class TagsViewModel {
     private val viewModelJob = Job()
     private val mainScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -47,7 +46,7 @@ class TagsViewModel {
         }
     }
 
-    //TODO: research if its better to use withContext here instead of dbScope.launch
+    //TODO: research if its better to use withContext/runBlocking here instead of dbScope.launch
     fun getTagByLabel(label: String): Tag? = runBlocking {
         var tag: Tag? = null
 
