@@ -35,6 +35,9 @@ fun Home(
             maxValue = timerConfiguration.mainSeconds,
             formattedValue = time.formatTime(),
             label = "asd_asd_asd_asd_asd_",
+            onClickLabel = {
+                println("clicked label")
+            },
             modifier = Modifier.size(400.dp)
         )
 

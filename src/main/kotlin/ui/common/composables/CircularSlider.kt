@@ -1,27 +1,35 @@
 package ui.common.composables
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.sp
+import java.awt.Cursor
 
 private const val CIRCLE_THICKNESS_DIVIDER = 30f
 
 //TODO: maybe refactor in the future so that it takes a tag argument instead of label and primary color
 //TODO: this needs to be tested because what would happen if the timer is currently short break or long break
 //TODO: potential solutions are either to add the breaks as tags or add some ternary operators
-//TODO: check why on macbook the size is 700x700 and on monitor is 350x350 (more pixels probably check scaling)Exactly
+//TODO: add so that you can only click label if the timer is paused/didnt start
 @Composable
 fun CircularSlider(
     primaryColor: Color,
@@ -32,20 +40,26 @@ fun CircularSlider(
     maxValue: Long,
     formattedValue: String,
     label: String,
+    onClickLabel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
     }
 
-    val timerTextMeasurer = rememberTextMeasurer()
-    val topicTextMeasurer = rememberTextMeasurer()
-
     Box(
         modifier = modifier
     ) {
         Canvas(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = { tapOffset ->
+
+                        }
+                    )
+                }
         ) {
             val width = size.width
             val height = size.height
@@ -86,45 +100,42 @@ fun CircularSlider(
                     y = (height - circleRadius.toPx() * 2f) / 2f
                 )
             )
+        }
 
-            drawText(
-                textMeasurer = timerTextMeasurer,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxSize().align(Alignment.Center)
+        ) {
+            Text(
                 text = formattedValue,
                 style = TextStyle(
-                    fontSize = (height / circleRadius.toPx() * 24).sp,
+                    fontSize = 48.sp,
                     color = Color.White,
                     textAlign = TextAlign.Center,
                     letterSpacing = 4.sp,
                 ),
-                size = Size(
-                  width =  circleRadius.toPx() * 2f,
-                  height = circleRadius.toPx()
-                ),
+                textAlign = TextAlign.Center,
                 maxLines = 1,
-                topLeft = Offset(
-                    width / 2f - circleRadius.toPx(),
-                    height / 2f - circleRadius.toPx() / 2f
-                ),
             )
 
-            drawText(
-                textMeasurer = topicTextMeasurer,
+            Text(
                 text = label,
                 style = TextStyle(
-                    fontSize = (height / circleRadius.toPx() * 24 / 2).sp,
+                    fontSize = 24.sp,
                     color = Color.White,
                     textAlign = TextAlign.Center,
                     letterSpacing = 2.sp,
                 ),
-                size = Size(
-                    width =  circleRadius.toPx() * 2f,
-                    height = circleRadius.toPx()
-                ),
+                textAlign = TextAlign.Center,
                 maxLines = 1,
-                topLeft = Offset(
-                    width / 2f - circleRadius.toPx(),
-                    height / 2f + circleRadius.toPx() / 4f
-                ),
+                modifier = Modifier
+                    .pointerHoverIcon(
+                        PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR))
+                    )
+                    .clickable {
+                        onClickLabel()
+                    }
             )
         }
     }
