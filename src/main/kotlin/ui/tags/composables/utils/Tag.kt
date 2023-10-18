@@ -33,7 +33,6 @@ fun Tag(
     onEditTag: (Tag) -> Unit,
     onUpdateFavoriteStatus: (Tag) -> Unit
 ) {
-    println(tag)
     Column(
         modifier = Modifier
             .clickable { onEditTag(tag) }
