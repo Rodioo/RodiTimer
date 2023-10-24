@@ -55,3 +55,11 @@ fun MutableStateFlow<TimerConfiguration>.onNumberOfRoundsSliderChange(newSliderV
         )
     }
 }
+
+//fun MutableStateFlow<TimerConfiguration>.onSelectedTagChange(newTagId: Long) {
+//    this.update { currentTimerConfiguration ->
+//        currentTimerConfiguration.copy(
+//            idTag = newTagId
+//        )
+//    }
+//}

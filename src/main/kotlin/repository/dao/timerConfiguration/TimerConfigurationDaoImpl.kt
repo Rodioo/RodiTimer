@@ -4,6 +4,7 @@ import app.cash.sqldelight.db.SqlDriver
 import repository.DatabaseResponse
 import repository.DatabaseResponseType
 import repository.LocalDatabase
+import ui.tags.models.Tag
 import ui.timer.models.TimerConfiguration
 
 class TimerConfigurationDaoImpl(
@@ -17,7 +18,8 @@ class TimerConfigurationDaoImpl(
             DatabaseResponse(
                 type = DatabaseResponseType.SUCCESS,
                 data = TimerConfiguration(
-                   mainSeconds = result.mainSeconds,
+                    tag = result.tag,
+                    mainSeconds = result.mainSeconds,
                     shortBreakSeconds = result.shortBreakSeconds,
                     longBreakSeconds = result.longBreakSeconds,
                     rounds = result.rounds
@@ -35,6 +37,7 @@ class TimerConfigurationDaoImpl(
     override fun insert(timerConfiguration: TimerConfiguration): DatabaseResponse<TimerConfiguration?> {
         return try {
             database.timerConfigurationQueries.insertTimerConfiguration(
+                tag = timerConfiguration.tag,
                 mainSeconds = timerConfiguration.mainSeconds,
                 shortBreakSeconds = timerConfiguration.shortBreakSeconds,
                 longBreakSeconds = timerConfiguration.longBreakSeconds,
@@ -46,6 +49,7 @@ class TimerConfigurationDaoImpl(
                 data = timerConfiguration,
             )
         } catch (exception: Exception) {
+            println(exception)
             DatabaseResponse(
                 type = DatabaseResponseType.FAILED,
                 data = null,

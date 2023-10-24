@@ -4,8 +4,11 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import repository.DriverFactory
+import repository.dao.tag.TagDao
+import repository.dao.tag.TagDaoImpl
 import repository.dao.timerConfiguration.TimerConfigurationDao
 import repository.dao.timerConfiguration.TimerConfigurationDaoImpl
+import ui.tags.models.Tag
 import ui.timer.models.TimerConfiguration
 
 class HomeViewModel {
@@ -14,9 +17,13 @@ class HomeViewModel {
     private val dbScope = CoroutineScope(viewModelJob + Dispatchers.IO)
 
     private val timerConfigurationDao: TimerConfigurationDao
+    private val tagDao: TagDao
 
     private val _error = MutableStateFlow<String?>(null)
         val error = _error.asStateFlow()
+
+    private val _tags = MutableStateFlow<List<Tag>>(listOf())
+        val tags = _tags.asStateFlow()
 
     private val _isTimerRunning = MutableStateFlow(false)
         val isTimerRunning = _isTimerRunning.asStateFlow()
@@ -30,8 +37,24 @@ class HomeViewModel {
     init {
         val driver = DriverFactory().createSQLiteDriver()
         timerConfigurationDao =  TimerConfigurationDaoImpl(driver)
+        tagDao =  TagDaoImpl(driver)
 
         getTimerConfiguration()
+        getTags()
+    }
+
+    private fun getTags() {
+        dbScope.launch {
+            val response = tagDao.getAll()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _tags.value = response.data ?: listOf()
+                } else {
+                    _tags.value = listOf()
+                    _error.value = response.additionalMessage
+                }
+            }
+        }
     }
 
     private fun getTimerConfiguration() {
@@ -43,6 +66,21 @@ class HomeViewModel {
                     _time.value = _timerConfiguration.value.mainSeconds
                 } else {
                     _error.value = response.additionalMessage
+                }
+            }
+        }
+    }
+
+    fun updateTimerConfigurationTag(newTag: Tag) {
+        _timerConfiguration.value = _timerConfiguration.value.copy(tag = newTag)
+        dbScope.launch {
+            val response = timerConfigurationDao.insert(_timerConfiguration.value)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _timerConfiguration.value = response.data ?: _timerConfiguration.value
+                } else {
+                    _error.value = response.additionalMessage
+                    println(_error.value)
                 }
             }
         }

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
@@ -34,13 +35,18 @@ fun StyledButton(
     textSize: TextUnit = 18.sp,
     leadingIcon: ImageVector? = null,
     leadingIconSize: Dp = 20.dp,
+    enabled: Boolean = true,
     backgroundColor: Color = BUTTON_DEFAULT_BACKGROUND_COLOR,
     contentColor: Color = TEXT_COLOR,
     modifier : Modifier = Modifier
 ) {
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor),
+        enabled = enabled,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = backgroundColor,
+            disabledBackgroundColor = DISABLED_BUTTON_BACKGROUND_COMPOSITE_COLOR.compositeOver(backgroundColor)
+        ),
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
             .pointerHoverIcon(PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)))

@@ -3,11 +3,12 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 // KMM Compose version which is compatible with Kotlin 1.8.22
 // https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
 compose {
-    kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:1.4.8")
+    kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:1.5.3")
 }
 
 plugins {
-    kotlin("jvm")
+    kotlin("jvm") version "1.9.0"
+    kotlin("plugin.serialization") version "1.9.10"
     id("org.jetbrains.compose") version "1.5.10-beta01"
     id("app.cash.sqldelight") version "2.0.0"
 }
@@ -41,8 +42,11 @@ dependencies {
     //Material3
     implementation("org.jetbrains.compose.material3:material3:1.5.10-beta01")
 
+    //Color picker
     implementation("com.godaddy.android.colorpicker:compose-color-picker-jvm:0.7.0")
 
+    //Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 }
 
 sqldelight {

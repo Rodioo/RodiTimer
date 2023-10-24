@@ -142,7 +142,7 @@ fun Tags(
                         items(tags) {tag ->
                             Tag(
                                 tag = tag,
-                                onEditTag = { editableTag ->
+                                onClickTag = { editableTag ->
                                     editTag = editableTag
                                     displayEditPopup = true
                                 },

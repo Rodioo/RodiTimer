@@ -13,6 +13,12 @@ SELECT *
 FROM Tags
 WHERE label = :label;
 
+getTagById:
+SELECT *
+FROM Tags
+WHERE id = :id;
+
+
 getAllTags:
 SELECT *
 FROM Tags;

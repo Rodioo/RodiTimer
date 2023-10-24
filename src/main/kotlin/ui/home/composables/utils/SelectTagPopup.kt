@@ -14,17 +14,13 @@ import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Sell
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Divider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import kotlinx.coroutines.launch
 import ui.common.composables.StyledButton
 import ui.common.resources.TOP_BAR_BACKGROUND_COLOR
-import ui.common.resources.TOP_BAR_HEIGHT
 import ui.tags.composables.utils.Tag
 import ui.tags.models.Tag
 
@@ -36,15 +32,18 @@ enum class TagsListType{
 @Composable
 fun SelectTagPopup(
     tags: List<Tag>,
+    onSelectTag: (Tag) -> Unit,
     onClosePopup: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
-    //TODO: add logic here to check if user has favorite tags set then by default it's set to FAVORITE
-    var tagsListType by remember {
-        mutableStateOf(TagsListType.ALL)
+    val hasFavoriteTags by remember {
+        mutableStateOf(tags.find { it.isFavorite } != null)
+    }
+    var displayedTagsList by remember {
+        mutableStateOf(if (hasFavoriteTags) TagsListType.FAVORITE else TagsListType.ALL)
     }
 
     Dialog(
@@ -60,26 +59,22 @@ fun SelectTagPopup(
             ) {
                 StyledButton(
                     onClick = {
-                        tagsListType = TagsListType.FAVORITE
+                        displayedTagsList = TagsListType.FAVORITE
                     },
                     text = "Favorite",
                     leadingIcon = Icons.Default.Star,
+                    enabled = displayedTagsList != TagsListType.FAVORITE,
                     backgroundColor = TOP_BAR_BACKGROUND_COLOR.copy(alpha = 0.5f),
                     modifier = Modifier.weight(0.5f)
                 )
 
-//                Divider(
-//                    thickness = 2.dp,
-//                    color = Color.Black,
-//                    modifier = Modifier.height(TOP_BAR_HEIGHT).width(2.dp)
-//                )
-
                 StyledButton(
                     onClick = {
-                        tagsListType = TagsListType.ALL
+                        displayedTagsList = TagsListType.ALL
                     },
                     text = "All tags",
                     leadingIcon = Icons.Default.Sell,
+                    enabled = displayedTagsList != TagsListType.ALL,
                     backgroundColor = TOP_BAR_BACKGROUND_COLOR.copy(alpha = 0.5f),
                     modifier = Modifier.weight(0.5f)
                 )
@@ -99,18 +94,32 @@ fun SelectTagPopup(
                             }
                         )
                 ) {
-                    when(tagsListType) {
+                    when(displayedTagsList) {
                         TagsListType.ALL -> {
                             items(tags) {tag ->
                                 Tag(
                                     tag = tag,
-                                    onEditTag = {},
+                                    onClickTag = {
+                                        onSelectTag(it)
+                                        onClosePopup()
+                                    },
+                                    enabledFavoriteIcon = false,
                                     onUpdateFavoriteStatus = {}
                                 )
                             }
                         }
                         TagsListType.FAVORITE -> {
-
+                            items(tags.filter { it.isFavorite }) { tag ->
+                                Tag(
+                                    tag = tag,
+                                    onClickTag = {
+                                        onSelectTag(it)
+                                        onClosePopup()
+                                    },
+                                    enabledFavoriteIcon = false,
+                                    onUpdateFavoriteStatus = {}
+                                )
+                            }
                         }
                     }
                 }

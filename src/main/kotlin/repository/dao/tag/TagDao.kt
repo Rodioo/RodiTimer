@@ -8,6 +8,8 @@ interface TagDao {
 
     fun getByLabel(label: String): DatabaseResponse<Tag?>
 
+    fun getById(id: Long?): DatabaseResponse<Tag?>
+
     fun getAll(): DatabaseResponse<List<Tag>?>
 
     fun insert(tag: Tag): DatabaseResponse<Tag?>

@@ -22,6 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.sp
+import ui.common.resources.MAIN_SLIDER_COLOR
+import ui.tags.models.Tag
 import java.awt.Cursor
 
 private const val CIRCLE_THICKNESS_DIVIDER = 30f
@@ -32,14 +34,13 @@ private const val CIRCLE_THICKNESS_DIVIDER = 30f
 //TODO: add so that you can only click label if the timer is paused/didnt start
 @Composable
 fun CircularSlider(
-    primaryColor: Color,
+    tag: Tag?,
     secondaryColor: Color,
     backgroundColor: Color,
     circleRadius: Dp,
     value: Long,
     maxValue: Long,
     formattedValue: String,
-    label: String,
     onClickLabel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -83,7 +84,7 @@ fun CircularSlider(
             )
 
             drawArc(
-                color = primaryColor,
+                color = tag?.color ?: MAIN_SLIDER_COLOR,
                 startAngle = 270f,
                 sweepAngle = (360f / maxValue) * value.toFloat(),
                 style = Stroke(
@@ -120,7 +121,7 @@ fun CircularSlider(
             )
 
             Text(
-                text = label,
+                text = tag?.label ?: "No tag",
                 style = TextStyle(
                     fontSize = 24.sp,
                     color = Color.White,

@@ -31,7 +31,6 @@ fun String.toColor() : Color? {
         )
     } catch(exception: Exception) {
         return null
-
     }
 }
 

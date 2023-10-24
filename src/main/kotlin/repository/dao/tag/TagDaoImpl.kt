@@ -32,6 +32,31 @@ class TagDaoImpl(
         }
     }
 
+    override fun getById(id: Long?): DatabaseResponse<Tag?> {
+        return try {
+            if (id == null) {
+                throw NullPointerException()
+            }
+
+            val result = database.tagsQueries.getTagById(id).executeAsOne()
+            DatabaseResponse(
+                type = DatabaseResponseType.SUCCESS,
+                data = Tag(
+                    id = result.id,
+                    label = result.label,
+                    color = result.color,
+                    isFavorite = result.isFavorite
+                )
+            )
+        } catch (exception: NullPointerException) {
+            DatabaseResponse(
+                type = DatabaseResponseType.FAILED,
+                data = null,
+                additionalMessage = "Failed to get tag with id: $id.\n Please reload the screen."
+            )
+        }
+    }
+
     override fun getAll(): DatabaseResponse<List<Tag>?> {
         return try {
             val result = database.tagsQueries.getAllTags().executeAsList()

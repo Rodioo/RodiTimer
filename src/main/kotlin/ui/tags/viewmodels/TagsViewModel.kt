@@ -46,7 +46,6 @@ class TagsViewModel {
         }
     }
 
-    //TODO: research if its better to use withContext/runBlocking here instead of dbScope.launch
     fun getTagByLabel(label: String): Tag? = runBlocking {
         var tag: Tag? = null
 

@@ -11,7 +11,6 @@ import ui.home.composables.utils.PlayPauseButton
 import ui.common.composables.CircularSlider
 import ui.common.formatTime
 import ui.home.composables.utils.SelectTagPopup
-import ui.tags.models.Tag
 
 @Composable
 fun Home(
@@ -19,6 +18,7 @@ fun Home(
     viewModel: HomeViewModel = remember { HomeViewModel() }
 ) {
     val time by viewModel.time.collectAsState()
+    val tags by viewModel.tags.collectAsState()
     val timerConfiguration by viewModel.timerConfiguration.collectAsState()
     val isTimerRunning by viewModel.isTimerRunning.collectAsState()
 
@@ -33,14 +33,13 @@ fun Home(
             Spacer(modifier = Modifier.height(24.dp))
 
             CircularSlider(
-                primaryColor = Color.Blue,
+                tag = timerConfiguration.tag,
                 secondaryColor = Color.Gray,
                 backgroundColor = Color(0xFF2F384B),
                 circleRadius = 200.dp,
                 value = time,
                 maxValue = timerConfiguration.mainSeconds,
                 formattedValue = time.formatTime(),
-                label = "asd_asd_asd_asd_asd_",
                 onClickLabel = {
                     showSelectTagPopup = true
                 },
@@ -58,29 +57,10 @@ fun Home(
 
         if (showSelectTagPopup) {
             SelectTagPopup(
-                listOf(
-                    Tag(
-                        label = "Ceva",
-                        color = Color.Red
-                    ),
-                    Tag(
-                        label = "Ceva2",
-                        color = Color.Red
-                    ),
-                    Tag(
-                        label = "Ceva3",
-                        color = Color.Blue
-                    ),
-                    Tag(
-                        label = "Ceva4",
-                        color = Color.Yellow
-                    ),
-                    Tag(
-                        label = "Ceva5",
-                        color = Color.Blue
-                    ),
-
-                ),
+                tags = tags,
+                onSelectTag = {
+                    viewModel.updateTimerConfigurationTag(it)
+                },
                 onClosePopup = {
                     showSelectTagPopup = false
                 },

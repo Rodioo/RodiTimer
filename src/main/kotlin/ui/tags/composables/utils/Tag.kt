@@ -30,12 +30,13 @@ import java.awt.Cursor
 @Composable
 fun Tag(
     tag: Tag,
-    onEditTag: (Tag) -> Unit,
+    onClickTag: (Tag) -> Unit,
+    enabledFavoriteIcon: Boolean = true,
     onUpdateFavoriteStatus: (Tag) -> Unit
 ) {
     Column(
         modifier = Modifier
-            .clickable { onEditTag(tag) }
+            .clickable { onClickTag(tag) }
             .pointerHoverIcon(PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)))
     ) {
         Spacer(modifier = Modifier.height(32.dp))
@@ -63,6 +64,7 @@ fun Tag(
             }
 
             IconButton(
+                enabled = enabledFavoriteIcon,
                 onClick = {
                     onUpdateFavoriteStatus(tag)
                 },
