@@ -33,7 +33,7 @@ fun Home(
             Spacer(modifier = Modifier.height(24.dp))
 
             CircularSlider(
-                tag = timerConfiguration.tag,
+                tag = viewModel.getTagInfo(),
                 secondaryColor = Color.Gray,
                 backgroundColor = Color(0xFF2F384B),
                 circleRadius = 200.dp,

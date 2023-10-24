@@ -1,8 +1,6 @@
-import ui.tags.models.Tag;
-
 CREATE TABLE IF NOT EXISTS TimerConfigurations (
     id INTEGER PRIMARY KEY,
-    tag TEXT AS Tag,
+    idTag INTEGER,
     mainSeconds INTEGER NOT NULL,
     shortBreakSeconds INTEGER NOT NULL,
     longBreakSeconds INTEGER NOT NULL,
@@ -16,6 +14,6 @@ WHERE id = 1;
 
 insertTimerConfiguration:
 INSERT OR REPLACE
-INTO TimerConfigurations(id, tag, mainSeconds, shortBreakSeconds, longBreakSeconds, rounds)
+INTO TimerConfigurations(id, idTag, mainSeconds, shortBreakSeconds, longBreakSeconds, rounds)
 VALUES (1, ?, ?, ?, ?, ?);
 

@@ -71,8 +71,21 @@ class HomeViewModel {
         }
     }
 
+    fun getTagInfo(): Tag? = runBlocking {
+        var tag: Tag? = null
+
+        val response = tagDao.getById(_timerConfiguration.value.idTag)
+        if (response.isSuccessful) {
+            tag = response.data
+        } else {
+            _error.value = response.additionalMessage
+        }
+
+        return@runBlocking tag
+    }
+
     fun updateTimerConfigurationTag(newTag: Tag) {
-        _timerConfiguration.value = _timerConfiguration.value.copy(tag = newTag)
+        _timerConfiguration.value = _timerConfiguration.value.copy(idTag = newTag.id)
         dbScope.launch {
             val response = timerConfigurationDao.insert(_timerConfiguration.value)
             withContext(Dispatchers.Main) {

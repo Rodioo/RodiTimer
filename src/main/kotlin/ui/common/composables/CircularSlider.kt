@@ -28,7 +28,6 @@ import java.awt.Cursor
 
 private const val CIRCLE_THICKNESS_DIVIDER = 30f
 
-//TODO: maybe refactor in the future so that it takes a tag argument instead of label and primary color
 //TODO: this needs to be tested because what would happen if the timer is currently short break or long break
 //TODO: potential solutions are either to add the breaks as tags or add some ternary operators
 //TODO: add so that you can only click label if the timer is paused/didnt start

@@ -18,7 +18,7 @@ class TimerConfigurationDaoImpl(
             DatabaseResponse(
                 type = DatabaseResponseType.SUCCESS,
                 data = TimerConfiguration(
-                    tag = result.tag,
+                    idTag = result.idTag,
                     mainSeconds = result.mainSeconds,
                     shortBreakSeconds = result.shortBreakSeconds,
                     longBreakSeconds = result.longBreakSeconds,
@@ -37,7 +37,7 @@ class TimerConfigurationDaoImpl(
     override fun insert(timerConfiguration: TimerConfiguration): DatabaseResponse<TimerConfiguration?> {
         return try {
             database.timerConfigurationQueries.insertTimerConfiguration(
-                tag = timerConfiguration.tag,
+                idTag = timerConfiguration.idTag,
                 mainSeconds = timerConfiguration.mainSeconds,
                 shortBreakSeconds = timerConfiguration.shortBreakSeconds,
                 longBreakSeconds = timerConfiguration.longBreakSeconds,
